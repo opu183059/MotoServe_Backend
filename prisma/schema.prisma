@@ -22,6 +22,7 @@ model Customer {
   updatedAt  DateTime @updatedAt
   bikes      Bike[]
 
+  @@index([customerId], name: "idx_customer_id")
   @@map("customers")
 }
 
@@ -35,18 +36,26 @@ model Bike {
   customer Customer        @relation(fields: [customerId], references: [customerId])
   services ServiceRecord[]
 
+  @@index([bikeId], name: "idx_bike_id")
   @@map("bikes")
 }
 
 model ServiceRecord {
-  serviceId      String    @id @default(uuid())
+  serviceId      String        @id @default(uuid())
   bikeId         String
   serviceDate    DateTime
   completionDate DateTime?
   description    String
-  status         String
+  status         ServiceStatus
 
   bike Bike @relation(fields: [bikeId], references: [bikeId])
 
+  @@index([serviceId], name: "idx_service_id")
   @@map("service_records")
+}
+
+enum ServiceStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
 }

@@ -11,7 +11,7 @@ const createCustomer = async (
   try {
     const result = await customerService.createCustomer(req.body);
     sendResponse(res, {
-      statusCode: httpStatus.OK,
+      statusCode: httpStatus.CREATED,
       success: true,
       message: "Customer created successfully",
       data: result,
@@ -71,6 +71,12 @@ const updateCustomer = async (
 ) => {
   const customerId = req.params.id;
   try {
+    const singleCustomer = await customerService.getCustomerById(customerId);
+    if (!singleCustomer)
+      return res
+        .status(404)
+        .json({ success: false, status: 404, message: "Customer not found" });
+
     const customer = await customerService.updateCustomer(customerId, req.body);
 
     sendResponse(res, {

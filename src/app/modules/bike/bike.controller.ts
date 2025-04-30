@@ -8,7 +8,7 @@ const addBike = async (req: Request, res: Response, next: NextFunction) => {
     const bike = await bikeService.addBike(req.body);
 
     sendResponse(res, {
-      statusCode: httpStatus.OK,
+      statusCode: httpStatus.CREATED,
       success: true,
       message: "Bike added successfully",
       data: bike,
